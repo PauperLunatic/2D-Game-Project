@@ -248,8 +248,8 @@ GameObject:
   - component: {fileID: 36349791}
   - component: {fileID: 36349790}
   - component: {fileID: 36349789}
-  m_Layer: 0
-  m_Name: GameObject
+  m_Layer: 7
+  m_Name: Evil Bat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -267,9 +267,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88fe89fb39bcd640b0ce0177716bbb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 0.2
+  maxHealth: 10
+  damageAmount: 0.1
   isDamagingOverTime: 0
-  damageRate: 0.2
+  damageRate: 0.1
   pointA: {fileID: 30802950}
   pointB: {fileID: 1325808683}
   speed: 2
@@ -725,7 +726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 286694630}
   - component: {fileID: 286694631}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: rousette2_16
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -8897,7 +8898,8 @@ GameObject:
   - component: {fileID: 762499231}
   - component: {fileID: 762499230}
   - component: {fileID: 762499229}
-  m_Layer: 0
+  - component: {fileID: 762499232}
+  m_Layer: 7
   m_Name: rousette2_18
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -9006,6 +9008,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &762499232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762499228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f88fe89fb39bcd640b0ce0177716bbb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  damageAmount: 0.1
+  isDamagingOverTime: 0
+  damageRate: 0.5
+  pointA: {fileID: 0}
+  pointB: {fileID: 0}
+  speed: 2
 --- !u!1 &767226389
 GameObject:
   m_ObjectHideFlags: 0
@@ -9546,6 +9567,41 @@ PolygonCollider2D:
       - {x: -0.1325, y: -1.0024999}
       - {x: -0.0325, y: -0.8925}
   m_UseDelaunayMesh: 0
+--- !u!1 &1021057139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1021057140}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1021057140
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021057139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1521668472}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.249, y: -0.082}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1029083548
 GameObject:
   m_ObjectHideFlags: 0
@@ -34158,6 +34214,7 @@ GameObject:
   - component: {fileID: 1521668479}
   - component: {fileID: 1521668478}
   - component: {fileID: 1521668480}
+  - component: {fileID: 1521668481}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Player
@@ -34230,6 +34287,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1845052496}
+  - {fileID: 1021057140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -34397,8 +34455,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d6b486fe4c50264e917ef03099a0adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
-  health: 10
+  maxHealth: 20
+  health: 20
+--- !u!114 &1521668481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521668470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c1798ee1678534a9d79d77f4974ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackRange: 1
+  attackDamage: 10
+  attackPoint: {fileID: 1021057140}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1625704479
 GameObject:
   m_ObjectHideFlags: 0

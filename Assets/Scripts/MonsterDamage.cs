@@ -2,68 +2,101 @@
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour
+{
+    public int maxHealth = 50; // Maximum health of the enemy
+    private int currentHealth;
+
+    public float damageAmount = 0.1f; // How much damage the enemy deals on contact
+    public bool isDamagingOverTime = false; // True if the enemy should cause damage over time
+    public float damageRate = 0.5f; // Time interval for damage over time
+    private float nextDamageTime = 0f;
+
+    public Transform pointA; // First patrol point
+    public Transform pointB; // Second patrol point
+    public float speed = 2f; // Movement speed
+
+    private Transform targetPoint;
+
+    void Start()
     {
-        // Damage-related fields
-        public float damageAmount = 0.1f; // How much damage the enemy deals on contact
-        public bool isDamagingOverTime = false; // True if the enemy should cause damage over time
-        public float damageRate = 0.5f; // Time interval for damage over time
-        private float nextDamageTime = 0f;
+        targetPoint = pointA;
+        currentHealth = maxHealth;
+    }
 
-        // Patrolling-related fields
-        public Transform pointA; // First patrol point
-        public Transform pointB; // Second patrol point
-        public float speed = 2f; // Movement speed
+    void Update()
+    {
+        Patrol();
+    }
 
-        private Transform targetPoint; // Current target point
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        Debug.Log("Enemy took " + damage + " damage.");
 
-        void Start()
+        if (currentHealth <= 0)
         {
-            targetPoint = pointA; // Start moving towards point A
+            Die();
         }
+    }
+    void Die()
+    {
+        Debug.Log("Enemy died!");
 
-        void Update()
+        // Increase the player's score
+        Scoring.totalScore += 10; // Award 10 points (adjust as needed)
+        Debug.Log("Score increased to: " + Scoring.totalScore);
+
+        // Update the score UI (if applicable)
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
         {
-            Patrol();
-        }
-
-        private void Patrol()
-        {
-            // Move towards the current target point
-            transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
-
-            // Check if the enemy has reached the target point
-            if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                // Switch target to the other point
-                targetPoint = targetPoint == pointA ? pointB : pointA;
+                playerController.scoreText.text = "Score: " + Scoring.totalScore;
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Player"))
-            {
-                // Apply damage instantly when the player touches the enemy
-                PlayerController player = collision.GetComponent<PlayerController>();
-                if (player != null)
-                {
-                    player.healthBar.Damage(damageAmount);
-                }
-            }
-        }
+        // Optionally, play a death animation or particle effect
+        // animator.SetTrigger("Die");
 
-        private void OnTriggerStay2D(Collider2D collision)
+        Destroy(gameObject); // Remove enemy from scene
+    }
+
+
+    private void Patrol()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, targetPoint.position, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetPoint.position) < 0.1f)
         {
-            if (isDamagingOverTime && collision.CompareTag("Player") && Time.time >= nextDamageTime)
+            targetPoint = targetPoint == pointA ? pointB : pointA;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            PlayerController player = collision.GetComponent<PlayerController>();
+            if (player != null)
             {
-                // Apply damage over time
-                PlayerController player = collision.GetComponent<PlayerController>();
-                if (player != null)
-                {
-                    player.healthBar.Damage(damageAmount);
-                    nextDamageTime = Time.time + damageRate;
-                }
+                player.healthBar.Damage(damageAmount);
             }
         }
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (isDamagingOverTime && collision.CompareTag("Player") && Time.time >= nextDamageTime)
+        {
+            PlayerController player = collision.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.healthBar.Damage(damageAmount);
+                nextDamageTime = Time.time + damageRate;
+            }
+        }
+    }
+}
